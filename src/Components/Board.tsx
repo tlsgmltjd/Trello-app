@@ -3,7 +3,6 @@ import styled from "styled-components";
 import DragabbleCard from "./DragabbleCard";
 
 const Wrapper = styled.div`
-  padding: 30px;
   background: ${(props) => props.theme.boardColor};
   border-radius: 5px;
   min-height: 250px;
@@ -15,8 +14,10 @@ const BoardTitle = styled.h1`
   font-size: 18px;
   font-weight: 600;
   width: 100%;
-  text-align: center;
-  margin-bottom: 20px;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 interface IAreaProps {
@@ -26,8 +27,13 @@ interface IAreaProps {
 
 const Area = styled.div<IAreaProps>`
   background-color: ${(props) =>
-    props.isDraggingOver ? "pink" : props.isDraggingFromThis ? "red" : "blue"};
+    props.isDraggingOver
+      ? "#ffeaa7"
+      : props.isDraggingFromThis
+      ? "#ff7675"
+      : "#dfe6e9"};
 
+  padding: 20px;
   flex-grow: 1;
   transition: background-color 0.3s ease-in-out;
 `;

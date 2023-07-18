@@ -7,6 +7,9 @@ const Card = styled.div`
   border-radius: 5px;
   padding: 10px 10px;
   margin-bottom: 5px;
+  text-align: center;
+  font-size: 1.2rem;
+  font-weight: 600;
 `;
 
 interface IDragabblCardProps {
@@ -15,7 +18,6 @@ interface IDragabblCardProps {
 }
 
 function DragabblCard({ toDo, index }: IDragabblCardProps) {
-  console.log(toDo, "has been rendered");
   return (
     <Draggable key={toDo} draggableId={toDo} index={index}>
       {(provided) => (

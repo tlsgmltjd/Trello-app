@@ -8,6 +8,7 @@ import { useRecoilState } from "recoil";
 import styled from "styled-components";
 import { toDoState } from "./atoms";
 import DragabblCard from "./Components/DragabbleCard";
+import Board from "./Components/Board";
 
 const Container = styled.div`
   background: ${(props) => props.theme.bgColor};
@@ -26,15 +27,7 @@ const Wrapper = styled.div`
 const Boards = styled.div`
   display: grid;
   width: 100%;
-  grid-template-columns: repeat(1, 1fr);
-`;
-
-const Board = styled.div`
-  padding: 0 20px;
-  padding-top: 30px;
-  background: ${(props) => props.theme.boardColor};
-  border-radius: 5px;
-  min-height: 200px;
+  grid-template-columns: repeat(3, 1fr);
 `;
 
 export default function App() {
@@ -57,16 +50,9 @@ export default function App() {
       <Container>
         <Wrapper>
           <Boards>
-            <Droppable droppableId="one">
-              {(provider) => (
-                <Board ref={provider.innerRef} {...provider.droppableProps}>
-                  {toDos.map((toDo, index) => (
-                    <DragabblCard key={toDo} toDo={toDo} index={index} />
-                  ))}
-                  {provider.placeholder}
-                </Board>
-              )}
-            </Droppable>
+            {Object.keys(toDos).map((boardId) => (
+              <Board boardId={boardId} key={boardId} toDos={toDos[boardId]} />
+            ))}
           </Boards>
         </Wrapper>
       </Container>

@@ -1,13 +1,7 @@
-import {
-  DragDropContext,
-  Draggable,
-  DropResult,
-  Droppable,
-} from "react-beautiful-dnd";
+import { DragDropContext, DropResult } from "react-beautiful-dnd";
 import { useRecoilState } from "recoil";
 import styled from "styled-components";
 import { toDoState } from "./atoms";
-import DragabblCard from "./Components/DragabbleCard";
 import Board from "./Components/Board";
 
 const Container = styled.div`
@@ -16,7 +10,7 @@ const Container = styled.div`
 
 const Wrapper = styled.div`
   display: flex;
-  max-width: 480px;
+  max-width: 680px;
   width: 100%;
   height: 100vh;
   margin: 0 auto;
@@ -27,21 +21,24 @@ const Wrapper = styled.div`
 const Boards = styled.div`
   display: grid;
   width: 100%;
+  gap: 10px;
   grid-template-columns: repeat(3, 1fr);
 `;
 
 export default function App() {
   const [toDos, setToDos] = useRecoilState(toDoState);
 
-  const onDragEnd = ({ draggableId, destination, source }: DropResult) => {
-    if (destination) {
-      setToDos((oldTodos) => {
-        const copyToDos = [...oldTodos];
-        // 1) Delete item on source.index
-        copyToDos.splice(source.index, 1);
-        // 2) Put back the item on the destination.index
-        copyToDos.splice(Number(destination?.index), 0, draggableId);
-        return [...copyToDos];
+  const onDragEnd = (info: DropResult) => {
+    const { draggableId, destination, source } = info;
+
+    if (destination?.droppableId === source.droppableId) {
+      // same board movement
+      setToDos((allBoards) => {
+        const copy = [...allBoards[source.droppableId]];
+        copy.splice(source.index, 1);
+        copy.splice(destination?.index, 0, draggableId);
+
+        return { ...toDos, [source.droppableId]: copy };
       });
     }
   };

@@ -27,6 +27,7 @@ time, mark, audio, video {
   font: inherit;
   vertical-align: baseline;
 }
+
 `;
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(

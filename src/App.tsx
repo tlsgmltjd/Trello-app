@@ -33,35 +33,41 @@ const Card = styled.div`
   background: ${(props) => props.theme.cardColor};
   border-radius: 5px;
   padding: 10px 10px;
+  margin-bottom: 5px;
 `;
+
+const toDos = ["a", "b", "c", "d", "e", "f"];
 
 export default function App() {
   const onDragEnd = () => {};
   return (
-    <Container>
-      <DragDropContext onDragEnd={onDragEnd}>
+    <DragDropContext onDragEnd={onDragEnd}>
+      <Container>
         <Wrapper>
           <Boards>
             <Droppable droppableId="one">
               {(provider) => (
                 <Board ref={provider.innerRef} {...provider.droppableProps}>
-                  <Draggable draggableId="first" index={0}>
-                    {(provided) => (
-                      <Card
-                        ref={provided.innerRef}
-                        {...provided.dragHandleProps}
-                        {...provided.draggableProps}
-                      >
-                        <span>❤️</span>ONE
-                      </Card>
-                    )}
-                  </Draggable>
+                  {toDos.map((toDo, index) => (
+                    <Draggable draggableId={toDo} index={index}>
+                      {(provided) => (
+                        <Card
+                          ref={provided.innerRef}
+                          {...provided.dragHandleProps}
+                          {...provided.draggableProps}
+                        >
+                          {toDo}
+                        </Card>
+                      )}
+                    </Draggable>
+                  ))}
+                  {provider.placeholder}
                 </Board>
               )}
             </Droppable>
           </Boards>
         </Wrapper>
-      </DragDropContext>
-    </Container>
+      </Container>
+    </DragDropContext>
   );
 }

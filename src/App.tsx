@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { toDoState } from "./atoms";
 import Board from "./Components/Board";
 import Trashcan from "./Components/Trashcan";
+import { useForm } from "react-hook-form";
 
 const Container = styled.div`
   background: ${(props) => props.theme.bgColor};
@@ -15,6 +16,7 @@ const Wrapper = styled.div`
   width: 100%;
   height: 100vh;
   margin: 0 auto;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
 `;
@@ -26,8 +28,47 @@ const Boards = styled.div`
   grid-template-columns: repeat(3, 1fr);
 `;
 
+const AddForm = styled.form`
+  margin: 20px;
+  background-color: rgb(218, 223, 233);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 8px;
+  padding: 10px;
+`;
+
+const AddInput = styled.input`
+  outline: none;
+  border: none;
+  background-color: rgba(0, 0, 0, 0);
+  text-align: center;
+  border-radius: 10px;
+  width: 150px;
+  font-size: 10px;
+  height: 10px;
+`;
+
 export default function App() {
   const [toDos, setToDos] = useRecoilState(toDoState);
+
+  const { register, setValue, handleSubmit } = useForm();
+
+  const onSubmit = ({ addBoard = "" }: { addBoard?: string }) => {
+    if (Object.keys(toDos).includes(addBoard)) {
+      alert("동일한 이름의 보드가 존재합니다!");
+      return;
+    }
+    setToDos((preToDos) => {
+      return {
+        ...preToDos,
+        [addBoard]: [],
+      };
+    });
+
+    setValue("addBoard", "");
+  };
 
   const onDragEnd = (info: DropResult) => {
     const { destination, source } = info;
@@ -84,6 +125,12 @@ export default function App() {
     <DragDropContext onDragEnd={onDragEnd}>
       <Container>
         <Wrapper>
+          <AddForm onSubmit={handleSubmit(onSubmit)}>
+            <AddInput
+              {...register("addBoard", { required: true })}
+              placeholder="추가할 보드의 이름을 적어주세요!"
+            />
+          </AddForm>
           <Boards>
             {Object.keys(toDos).map((boardId) => (
               <Board boardId={boardId} key={boardId} toDos={toDos[boardId]} />

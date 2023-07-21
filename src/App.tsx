@@ -1,8 +1,9 @@
 import { DragDropContext, DropResult } from "react-beautiful-dnd";
 import { useRecoilState } from "recoil";
 import styled from "styled-components";
-import { ITodo, toDoState } from "./atoms";
+import { toDoState } from "./atoms";
 import Board from "./Components/Board";
+import Trashcan from "./Components/Trashcan";
 
 const Container = styled.div`
   background: ${(props) => props.theme.bgColor};
@@ -29,8 +30,23 @@ export default function App() {
   const [toDos, setToDos] = useRecoilState(toDoState);
 
   const onDragEnd = (info: DropResult) => {
-    const { draggableId, destination, source } = info;
+    const { destination, source } = info;
+
     if (!destination) return;
+
+    if (destination?.droppableId === "trashcan") {
+      // remove item
+      setToDos((allBoards) => {
+        const sourceCopy = [...allBoards[source.droppableId]];
+        sourceCopy.splice(source.index, 1);
+
+        return {
+          ...allBoards,
+          [source.droppableId]: sourceCopy,
+        };
+      });
+    }
+
     if (destination?.droppableId === source.droppableId) {
       // same board movement
       setToDos((allBoards) => {
@@ -43,7 +59,10 @@ export default function App() {
       });
     }
 
-    if (destination?.droppableId !== source.droppableId) {
+    if (
+      destination?.droppableId !== source.droppableId &&
+      !(destination?.droppableId === "trashcan")
+    ) {
       // cross board movement
       setToDos((allBoards) => {
         const sourceCopy = [...allBoards[source.droppableId]];
@@ -60,6 +79,7 @@ export default function App() {
       });
     }
   };
+
   return (
     <DragDropContext onDragEnd={onDragEnd}>
       <Container>
@@ -68,6 +88,7 @@ export default function App() {
             {Object.keys(toDos).map((boardId) => (
               <Board boardId={boardId} key={boardId} toDos={toDos[boardId]} />
             ))}
+            <Trashcan />
           </Boards>
         </Wrapper>
       </Container>

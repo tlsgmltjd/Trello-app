@@ -1,7 +1,7 @@
 import { DragDropContext, DropResult } from "react-beautiful-dnd";
 import { useRecoilState } from "recoil";
 import styled from "styled-components";
-import { toDoState } from "./atoms";
+import { ITodo, toDoState } from "./atoms";
 import Board from "./Components/Board";
 
 const Container = styled.div`

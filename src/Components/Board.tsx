@@ -49,6 +49,19 @@ const Form = styled.form`
   width: 100%;
   display: flex;
   justify-content: center;
+  margin-bottom: 15px;
+
+  input {
+    border: none;
+    border-radius: 8px;
+    text-align: center;
+    padding: 5px;
+    font-weight: 600;
+    font-size: 13px;
+    background: rgba(0, 0, 0, 0);
+    border-bottom: 1px solid;
+    outline: none;
+  }
 `;
 
 interface IBoardProps {

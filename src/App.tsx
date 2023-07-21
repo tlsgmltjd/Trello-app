@@ -35,8 +35,9 @@ export default function App() {
       // same board movement
       setToDos((allBoards) => {
         const copy = [...allBoards[source.droppableId]];
+        const taskObj = copy[source.index];
         copy.splice(source.index, 1);
-        copy.splice(destination?.index, 0, draggableId);
+        copy.splice(destination?.index, 0, taskObj);
 
         return { ...toDos, [source.droppableId]: copy };
       });
@@ -46,9 +47,10 @@ export default function App() {
       // cross board movement
       setToDos((allBoards) => {
         const sourceCopy = [...allBoards[source.droppableId]];
+        const taskObj = sourceCopy[source.index];
         const destinationCopy = [...allBoards[destination.droppableId]];
         sourceCopy.splice(source.index, 1);
-        destinationCopy.splice(destination.index, 0, draggableId);
+        destinationCopy.splice(destination.index, 0, taskObj);
 
         return {
           ...allBoards,

@@ -37,6 +37,13 @@ const AddForm = styled.form`
   align-items: center;
   border-radius: 8px;
   padding: 10px;
+
+  transition: scale 0.3s;
+
+  &:hover {
+    scale: 1.1;
+    transition: scale 0.3s;
+  }
 `;
 
 const AddInput = styled.input`

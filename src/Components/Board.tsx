@@ -53,10 +53,8 @@ const Form = styled.form`
 
   input {
     border: none;
-    border-radius: 8px;
     text-align: center;
     padding: 5px;
-    font-weight: 600;
     font-size: 13px;
     background: rgba(0, 0, 0, 0);
     border-bottom: 1px solid;

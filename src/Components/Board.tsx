@@ -76,11 +76,17 @@ export default function Board({ toDos, boardId }: IBoardProps) {
       text: toDo,
     };
     setToDo((allBoards) => {
+      localStorage.setItem(
+        boardId,
+        JSON.stringify([newToDo, ...allBoards[boardId]])
+      );
+
       return {
         ...allBoards,
         [boardId]: [newToDo, ...allBoards[boardId]],
       };
     });
+
     setValue("toDo", "");
   };
 

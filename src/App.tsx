@@ -1,10 +1,11 @@
 import { DragDropContext, DropResult } from "react-beautiful-dnd";
 import { useRecoilState } from "recoil";
 import styled from "styled-components";
-import { toDoState } from "./atoms";
+import { ITodoState, toDoState } from "./atoms";
 import Board from "./Components/Board";
 import Trashcan from "./Components/Trashcan";
 import { useForm } from "react-hook-form";
+import { useEffect } from "react";
 
 const Container = styled.div`
   background: ${(props) => props.theme.bgColor};
@@ -58,9 +59,9 @@ const AddInput = styled.input`
 `;
 
 export default function App() {
-  const [toDos, setToDos] = useRecoilState(toDoState);
+  const [toDos, setToDos] = useRecoilState<ITodoState>(toDoState);
 
-  const { register, setValue, handleSubmit } = useForm();
+  const { register, setValue, handleSubmit, getValues } = useForm();
 
   const onSubmit = ({ addBoard = "" }: { addBoard?: string }) => {
     if (Object.keys(toDos).includes(addBoard)) {
@@ -127,6 +128,24 @@ export default function App() {
       });
     }
   };
+
+  useEffect(() => {
+    const copyToDos = { ...toDos };
+    Object.keys(copyToDos).map((i) => {
+      if (!toDos[i]) {
+        localStorage.setItem(i, JSON.stringify(toDos[i]));
+      } else {
+        setToDos((pre) => {
+          const getToDo = JSON.parse(localStorage.getItem(i));
+          console.log(i);
+          return {
+            ...pre,
+            [i]: [...getToDo],
+          };
+        });
+      }
+    });
+  }, []);
 
   return (
     <DragDropContext onDragEnd={onDragEnd}>

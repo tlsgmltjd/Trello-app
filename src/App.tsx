@@ -61,7 +61,30 @@ const AddInput = styled.input`
 export default function App() {
   const [toDos, setToDos] = useRecoilState<ITodoState>(toDoState);
 
-  const { register, setValue, handleSubmit, getValues } = useForm();
+  const { register, setValue, handleSubmit } = useForm();
+
+  // 보드 추가시 loclastorage 등록
+  // item 이동시 localstorage 업데이트 ✅
+
+  const handleLocalstorage = () => {
+    const copyToDos = { ...toDos };
+    Object.keys(copyToDos).map((i) => {
+      setToDos((pre) => {
+        const getToDo = JSON.parse(localStorage.getItem(i));
+        return {
+          ...pre,
+          [i]: [...getToDo],
+        };
+      });
+    });
+  };
+
+  const handleDragEnd = () => {
+    const copyToDos = { ...toDos };
+    Object.keys(copyToDos).map((i) => {
+      localStorage.setItem(i, JSON.stringify(toDos[i]));
+    });
+  };
 
   const onSubmit = ({ addBoard = "" }: { addBoard?: string }) => {
     if (Object.keys(toDos).includes(addBoard)) {
@@ -127,25 +150,17 @@ export default function App() {
         };
       });
     }
+
+    handleDragEnd();
   };
 
   useEffect(() => {
-    const copyToDos = { ...toDos };
-    Object.keys(copyToDos).map((i) => {
-      if (!toDos[i]) {
-        localStorage.setItem(i, JSON.stringify(toDos[i]));
-      } else {
-        setToDos((pre) => {
-          const getToDo = JSON.parse(localStorage.getItem(i));
-          console.log(i);
-          return {
-            ...pre,
-            [i]: [...getToDo],
-          };
-        });
-      }
-    });
+    handleLocalstorage();
   }, []);
+
+  useEffect(() => {
+    handleDragEnd();
+  }, [toDos]);
 
   return (
     <DragDropContext onDragEnd={onDragEnd}>

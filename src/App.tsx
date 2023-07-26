@@ -63,30 +63,32 @@ export default function App() {
 
   const { register, setValue, handleSubmit } = useForm();
 
-  // 보드 추가시 loclastorage 등록
-  // item 이동시 localstorage 업데이트 ✅
-
   const handleLocalstorage = () => {
-    const copyToDos = { ...toDos };
-    Object.keys(copyToDos).map((i) => {
-      if (!localStorage.getItem(i)) {
-        localStorage.setItem(i, JSON.stringify(copyToDos[i]));
-      }
-      setToDos((pre) => {
-        const getToDo = JSON.parse(localStorage.getItem(i)!);
-        return {
-          ...pre,
-          [i]: [...getToDo],
-        };
-      });
+    const Boards = JSON.parse(localStorage.getItem("BOARD")!);
+    setToDos({
+      ...Boards,
     });
+  };
+
+  const addNewBoard = (boardName: string) => {
+    const oldToDos = JSON.parse(localStorage.getItem("BOARD")!);
+    localStorage.setItem(
+      "BOARD",
+      JSON.stringify({
+        [boardName]: [],
+        ...oldToDos,
+      })
+    );
   };
 
   const handleDragEnd = () => {
     const copyToDos = { ...toDos };
-    Object.keys(copyToDos).map((i) => {
-      localStorage.setItem(i, JSON.stringify(toDos[i]));
-    });
+    localStorage.setItem(
+      "BOARD",
+      JSON.stringify({
+        ...copyToDos,
+      })
+    );
   };
 
   const onSubmit = ({ addBoard = "" }: { addBoard?: string }) => {
@@ -101,7 +103,7 @@ export default function App() {
       };
     });
 
-    handleLocalstorage();
+    addNewBoard(addBoard);
 
     setValue("addBoard", "");
   };

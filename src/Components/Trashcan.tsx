@@ -9,8 +9,7 @@ const Wrapper = styled.div`
   border-radius: 15px;
   position: fixed;
   bottom: 2rem;
-  left: 50%;
-  transform: translateX(-50%);
+  left: 2rem;
   cursor: pointer;
   transition: all 0.3s ease;
 

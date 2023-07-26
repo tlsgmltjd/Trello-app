@@ -7,6 +7,11 @@ import { ThemeProvider, createGlobalStyle } from "styled-components";
 import { darkTheme } from "./theme.ts";
 
 const GolbalStyle = createGlobalStyle`
+
+html {
+  height: 100vh;
+}
+
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
 a, abbr, acronym, address, big, cite, code,
@@ -27,6 +32,47 @@ time, mark, audio, video {
   font: inherit;
   vertical-align: baseline;
 }
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure,
+footer, header, hgroup, main, menu, nav, section {
+  display: block;
+}
+/* HTML5 hidden-attribute fix for newer browsers */
+*[hidden] {
+    display: none;
+}
+body {
+  line-height: 1;
+}
+menu, ol, ul {
+  list-style: none;
+}
+blockquote, q {
+  quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+  content: '';
+  content: none;
+}
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+body {
+  font-family: 'Source Sans 3', sans-serif;
+  background-color: ${(props) => props.theme.bgColor};
+  height: 100%;
+}
+a {
+  text-decoration: none;
+  color: inherit;
+}
+* {
+  box-sizing: border-box;
+}
+
+
 
 `;
 
@@ -34,10 +80,10 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <RecoilRoot>
     <ThemeProvider theme={darkTheme}>
       <Helmet>
-        <title>GSMATCH</title>
+        <title>공부를 하자 공부</title>
       </Helmet>
       <App />
+      <GolbalStyle />
     </ThemeProvider>
-    <GolbalStyle />
   </RecoilRoot>
 );

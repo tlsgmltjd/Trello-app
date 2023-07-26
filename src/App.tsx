@@ -9,17 +9,19 @@ import { useEffect } from "react";
 
 const Container = styled.div`
   background: ${(props) => props.theme.bgColor};
+  height: 100%;
 `;
 
 const Wrapper = styled.div`
   display: flex;
-  max-width: 680px;
+  max-width: 750px;
   width: 100%;
-  height: 100vh;
+  height: 100%;
   margin: 0 auto;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  padding: 50px 0;
 `;
 
 const Boards = styled.div`

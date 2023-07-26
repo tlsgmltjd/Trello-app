@@ -69,8 +69,11 @@ export default function App() {
   const handleLocalstorage = () => {
     const copyToDos = { ...toDos };
     Object.keys(copyToDos).map((i) => {
+      if (!localStorage.getItem(i)) {
+        localStorage.setItem(i, JSON.stringify(copyToDos[i]));
+      }
       setToDos((pre) => {
-        const getToDo = JSON.parse(localStorage.getItem(i));
+        const getToDo = JSON.parse(localStorage.getItem(i)!);
         return {
           ...pre,
           [i]: [...getToDo],
@@ -97,6 +100,8 @@ export default function App() {
         [addBoard]: [],
       };
     });
+
+    handleLocalstorage();
 
     setValue("addBoard", "");
   };
@@ -173,9 +178,11 @@ export default function App() {
             />
           </AddForm>
           <Boards>
-            {Object.keys(toDos).map((boardId) => (
-              <Board boardId={boardId} key={boardId} toDos={toDos[boardId]} />
-            ))}
+            {Object.keys(toDos).map((boardId) => {
+              return (
+                <Board boardId={boardId} key={boardId} toDos={toDos[boardId]} />
+              );
+            })}
             <Trashcan />
           </Boards>
         </Wrapper>
